@@ -1,0 +1,14 @@
+._*
+.DS_Store
+/.bundle
+/db/*.sqlite3
+/log/*.log
+/tmp
+.idea/
+.redcar/
+/public/system
+/public/assets
+/public/coverage
+/vendor/bundle
+/public/uploads
+/config/smtp.yml
