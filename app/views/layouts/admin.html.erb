@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US">
+<head>
+  <meta charset="utf-8">
+  <title><%= t('application.title') %></title>
+  <meta name="description" content="<%= t('application.description') %>">
+  <meta name="author" content="<%= t('application.author') %>">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <%= stylesheet_link_tag 'admin', :media => 'all' %>
+  <%= javascript_include_tag 'admin' %>
+  <!--[if lt IE 9]>
+  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+  <link href="/favicon.ico" rel="shortcut icon">
+  <link href="<%= image_path('apple-touch-icon-iphone.png') %>" rel="apple-touch-icon" sizes="57x57">
+  <link href="<%= image_path('apple-touch-icon-ipad.png') %>" rel="apple-touch-icon" sizes="72x72">
+  <link href="<%= image_path('apple-touch-icon-iphone-retina.png') %>" rel="apple-touch-icon" sizes="114x114">
+  <link href="<%= image_path('apple-touch-icon-ipad-retina.png') %>" rel="apple-touch-icon" sizes="144x144">
+  <%= csrf_meta_tags %>
+</head>
+<body>
+<div class="container main">
+  <h1 class="hidden-phone">ruthieonart.biz Admin Panel</h1>
+  <div class="navbar">
+    <div class="navbar-inner">
+      <div class="container">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <%= link_to t('application.title'), root_path, :class => 'brand visible-phone' %>
+        <div class="nav-collapse collapse">
+          <ul class="nav" role="navigation">
+            <li><%= link_to t('navigation.admin_home'), admin_root_path, :class => is_active_controller?('admin/admin') %></li>
+            <% if can? :read, Post, current_user %><li class="post-nav-link"><%= link_to t('navigation.posts'), admin_posts_path, :class => is_active_controller?('admin/posts') %></li><% end %>
+            <% if can? :read, Page, current_user %><li class="page-nav-link"><%= link_to t('navigation.pages'), admin_pages_path, :class => is_active_controller?('admin/pages') %></li><% end %>
+            <% if can? :read, Picture, current_user %><li class="picture-nav-link"><%= link_to t('navigation.pictures'), admin_pictures_path, :class => is_active_controller?('admin/pictures') %></li><% end %>
+            <% if can? :read, User, current_user %><li class="user-nav-link"><%= link_to t('navigation.users'), admin_users_path, :class => is_active_controller?('admin/users') %></li><% end %>
+            <li class="site-home-nav-link"><%= link_to t('navigation.site_home'), root_path %></li>
+            <li class="account-nav-link hidden-desktop"><%= link_to t('accounts.edit.title'), edit_admin_account_path, :class => is_active_controller?('admin/accounts') %></li>
+            <li class="logout-nav-link hidden-desktop"><%= link_to t('navigation.sign_out'), logout_path, :method => :delete %></li>
+          </ul>
+        </div>
+        <div class="nav-collapse collapse pull-right visible-desktop">
+          <ul class="nav">
+            <li class="account-nav-link"><%= link_to t('accounts.edit.title'), edit_admin_account_path, :class => is_active_controller?('admin/accounts') %></li>
+            <li class="logout-nav-link"><%= link_to t('navigation.sign_out'), logout_path, :method => :delete %></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <%= flash_messages %>
+    <%= yield %>
+  </div>
+  <footer>
+  </footer>
+</div>
+</body>
+</html>
