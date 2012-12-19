@@ -1,0 +1,21 @@
+<% if @page.meta_description.present? %>
+  <% content_for :meta_description do %>
+    <%= @page.meta_description %>
+  <% end %>
+<% end %>
+<% if @page.meta_keywords.present? %>
+  <% content_for :meta_keywords do %>
+    <%= @page.meta_keywords %>
+  <% end %>
+<% end %>
+<div id="page-<%= @page.slug %>" class="page row">
+  <div class="page-body span12">
+    <h1<% if @page.color.present? %> style="color: <%= @page.color %>"<% end %>><%= @page.title %></h1>
+    <% if @page.style.present? %>
+      <style scoped>
+        <%= @page.style.html_safe %>
+      </style>
+    <% end %>
+    <%= @page.body.html_safe %>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+<div id="posts">
+  <% @posts.each do |post| %>
+    <%= render 'post', :post => post %>
+  <% end %>
+  <%= paginate @posts %>
+</div>

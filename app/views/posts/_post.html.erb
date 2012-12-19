@@ -1,0 +1,12 @@
+<article id="post-<%= post.id %>" class="post row">
+  <h1 class="post-title span8"><%= link_to post.title, post %> <small>(by <%= post.user.first_name %>)</small></h1>
+  <div class="post-date span4 pull-right"><%= post.created_at.strftime("%B %d, %Y %l:%M:%S %p") %></div>
+  <div class="post-body span12">
+    <% if post.style.present? %>
+      <style scoped="scoped">
+        <%= post.style.html_safe %>
+      </style>
+    <% end %>
+    <%= post.body.html_safe %>
+  </div>
+</article>

@@ -1,0 +1,14 @@
+<div id="contact">
+  <h1 style="color: #5ea33a;">Contact</h1>
+  <p>To get in contact with me please use the form below.</p>
+  <%= simple_form_for @contact, :url => 'contact', :method => :post, :html => { :class => 'form-horizontal', :honeypot => true } do |f| %>
+    <fieldset>
+      <%= f.input :name, :as => :string %>
+      <%= f.input :email, :as => :email %>
+      <%= f.input :phone_number, :as => :string %>
+      <%= f.input :subject, :as => :string %>
+      <%= f.input :body, :as => :text %>
+    </fieldset>
+    <%= f.submit 'Submit', :class => 'btn btn-primary' %>
+  <% end %>
+</div>

@@ -1,0 +1,28 @@
+<h2><%= t("pages.#{@page.persisted? ? 'edit' : 'new'}.title") %></h2>
+<%= simple_form_for [:admin, @page], :html => { :class => 'form-horizontal' } do |f| %>
+  <fieldset>
+    <legend><%= t('pages.sections.information') %></legend>
+    <%= f.input :title %>
+    <div class="input string optional">
+      <label class="string optional control-label"></label>
+      <a href="javascript:void(0);" class="picture-selector-button btn">Insert Picture</a>
+    </div>
+    <%= f.input :body %>
+    <%= f.input :style %>
+    <%= f.input :meta_description %>
+    <%= f.input :meta_keywords %>
+    <%= f.input :order %>
+    <%= f.input :color %>
+    <%= f.input :show_in_menu %>
+    <%= f.input :visible %>
+  </fieldset>
+  <div class="form-actions">
+    <%= link_to t('pages.links.back_to_index'), admin_pages_path, :class => 'btn' %>
+    <%= f.submit nil, :class => 'btn btn-primary' %>
+    <% unless @page.persisted? %>
+      <label class="checkbox inline">
+        <%= check_box_tag 'redirect_to_new', 1, true %> <%= t('helpers.submit.page.redirect_to_new') %>
+      </label>
+    <% end %>
+  </div>
+<% end %>

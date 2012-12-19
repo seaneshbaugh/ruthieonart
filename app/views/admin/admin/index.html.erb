@@ -1,0 +1,44 @@
+<div id="admin-index" class="admin-content">
+  <div id="quick-links" class="clearfix">
+    <h2><%= t('admin.sections.quick_links') %></h2>
+    <ul class="unstyled">
+      <% if can? :create, Post, current_user %><li class="posts-nav-link"><%= link_to (image_tag(image_path("icons/32x32/blog-post-add.png")) + '<br>'.html_safe + t('posts.new.title')), new_admin_post_path %></li><% end %>
+      <% if can? :create, Page, current_user %><li class="pages-nav-link"><%= link_to (image_tag(image_path("icons/32x32/page-add.png")) + '<br>'.html_safe + t('pages.new.title')), new_admin_page_path %></li><% end %>
+      <% if can? :create, Picture, current_user %><li class="pictures-nav-link"><%= link_to (image_tag(image_path("icons/32x32/image-add.png")) + '<br>'.html_safe + t('pictures.new.title')), new_admin_picture_path %></li><% end %>
+      <% if can? :create, User, current_user %><li class="users-nav-link"><%= link_to (image_tag(image_path("icons/32x32/user-add.png")) + '<br>'.html_safe + t('users.new.title')), new_admin_user_path %></li><% end %>
+    </ul>
+  </div>
+  <% if can? :create, Post, current_user %>
+    <div id="quick-post">
+      <h2><%= t("admin.sections.quick_post") %></h2>
+      <%= simple_form_for [:admin, Post.new], :html => { :class => 'form-horizontal' } do |f| %>
+        <fieldset>
+          <%= f.input :title %>
+          <%= f.input :body %>
+          <%= f.input :user_id, :as => :hidden, :input_html => { :value => current_user.id } %>
+        </fieldset>
+        <div class="form-actions">
+          <%= f.submit nil, :class => 'btn btn-primary right' %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+  <div id="rails-info">
+    <h2><%= t('admin.sections.rails_info') %></h2>
+    <%= Rails::Info.to_html.html_safe %>
+  </div>
+  <div id="routes">
+    <h2><%= t('admin.sections.routes') %></h2>
+    <pre>
+      <ul class="unstyled">
+        <%
+           routes = Rails.application.routes.routes
+           inspector = Rails::Application::RouteInspector.new
+        %>
+        <% inspector.format(routes, ENV['CONTROLLER']).each do |route| %>
+          <li><%= route %></li>
+        <% end %>
+      </ul>
+    </pre>
+  </div>
+</div>

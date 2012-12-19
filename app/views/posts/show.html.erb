@@ -1,0 +1,11 @@
+<% if @post.meta_description.present? %>
+  <% content_for :meta_description do %>
+    <%= @post.meta_description %>
+  <% end %>
+<% end %>
+<% if @post.meta_keywords.present? %>
+  <% content_for :meta_keywords do %>
+    <%= @post.meta_keywords %>
+  <% end %>
+<% end %>
+<%= render 'post', :post => @post %>
