@@ -1,12 +1,25 @@
 <article id="post-<%= post.id %>" class="post row">
-  <h1 class="post-title span8"><%= link_to post.title, post %> <small>(by <%= post.user.first_name %>)</small></h1>
-  <div class="post-date span4 pull-right"><%= post.created_at.strftime("%B %d, %Y %l:%M:%S %p") %></div>
-  <div class="post-body span12">
+  <h1 class="post-title col-xs-12">
+    <%= link_to post.title, post %>
+  </h1>
+  <div class="post-date col-xs-12">
+    <%= post.created_at.strftime('%B %d, %Y %l:%M:%S %p') %>
+  </div>
+  <div class="post-body col-xs-12">
     <% if post.style.present? %>
-      <style scoped="scoped">
+      <style>
         <%= post.style.html_safe %>
       </style>
     <% end %>
-    <%= post.body.html_safe %>
+    <% if params[:action] == 'index' %>
+      <%= post.more.html_safe %>
+      <% if post.truncated? %>
+        <div class="read-more">
+          <%= link_to t('read_more'), post %>
+        </div>
+      <% end %>
+    <% else %>
+      <%= post.body.html_safe %>
+    <% end %>
   </div>
 </article>

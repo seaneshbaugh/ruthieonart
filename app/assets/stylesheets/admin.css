@@ -2,6 +2,8 @@
  *= require_self
  *= require vendor_assets
  *= require_tree ./admin
+ *= require bootstrap-tokenfield/bootstrap-tokenfield
+ *= require bootstrap-tokenfield/tokenfield-typeahead
 */
 
 @charset "utf-8";

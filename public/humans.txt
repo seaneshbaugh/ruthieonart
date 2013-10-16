@@ -10,9 +10,9 @@
 
 /* SITE */
   Created On: 2012/12/18
-  Last Updated: 2012/12/18
+  Last Updated: 2012/10/15
   Language: English
   Doctype: HTML5
-  Lovingly Made In: RubyMine 4.5.4
-  Lovingly Made On: OSX 10.7 Lion
+  Lovingly Made In: RubyMine 5.4.3.2.1
+  Lovingly Made On: OSX 10.8 Lion
   Lovingly Made With: Ruby, Ruby on Rails, ERB, HTML5, CSS3, LESS, JavaScript, jQuery

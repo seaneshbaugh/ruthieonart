@@ -8,29 +8,33 @@ This application is intended to be run on Ruby 1.8.7-p173. Due to limitations of
 
 ## Rails Version
 
-This application uses Rails 3.2.9
+This application uses Rails 3.2.13
 
 ## Required Gems
 
 The following gems are required to run this application:
 
-* rails (3.2.9)
+* rails (3.2.13)
 * mysql2
+* acts-as-taggable-on
 * cancan
 * devise
 * exception_notification
 * highline
 * honeypot-captcha
 * kaminari
+* nokogiri
 * paper_trail
-* paperclip (~2.7)
+* paperclip (~> 2.7)
 * ransack
 * sanitize
 * simple_form
 * yaml_db
-* coffee-rails
+* jquery-fileupload-rails
 * jquery-rails
-* twitter-bootstrap-rails
+* less-rails
+* less-rails-bootstrap
+* therubyracer
 * uglifier
 * capistrano
 * capistrano-ext
@@ -38,7 +42,7 @@ The following gems are required to run this application:
 * quiet_assets
 * capybara
 * database_cleaner
-* factory_girl_rails (~2.0)
+* factory_girl (~> 2.0)
 * rspec-rails
 * shoulda-matchers
 * simplecov

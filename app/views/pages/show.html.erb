@@ -1,3 +1,8 @@
+<% if @page.title.present? %>
+  <% content_for :page_title do %>
+    <% "#{@page.title} - #{t('application.title')}" %>
+  <% end %>
+<% end %>
 <% if @page.meta_description.present? %>
   <% content_for :meta_description do %>
     <%= @page.meta_description %>
@@ -9,10 +14,12 @@
   <% end %>
 <% end %>
 <div id="page-<%= @page.slug %>" class="page row">
-  <div class="page-body span12">
-    <h1<% if @page.color.present? %> style="color: <%= @page.color %>"<% end %>><%= @page.title %></h1>
+  <header class="page-header col-xs-12">
+    <h1><%= @page.title %></h1>
+  </header>
+  <div class="page-body col-xs-12">
     <% if @page.style.present? %>
-      <style scoped>
+      <style>
         <%= @page.style.html_safe %>
       </style>
     <% end %>

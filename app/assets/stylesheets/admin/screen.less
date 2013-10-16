@@ -1,0 +1,109 @@
+@import "twitter/bootstrap/variables.less";
+@import "admin/variables.less";
+@import "twitter/bootstrap/mixins.less";
+@import "admin/mixins.less";
+
+body {
+  padding: 5px 0;
+}
+
+#title {
+  font-size: 18px;
+  margin-top: 0;
+}
+
+#quick-links{
+  .thumbnail {
+    background: #eeeeee;
+    margin-bottom: 20px;
+
+    &:hover, &:focus {
+      background: #d0d0d0;
+      border: 1px solid;
+      border-color: #d0d0d0 !important;
+      text-decoration: none;
+    }
+
+    img {
+      margin-top: 10px;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+}
+
+label[for=redirect_to_new] {
+  font-size: 10px;
+}
+
+.ace-editor {
+  border-radius: 4px;
+  height: 300px;
+  overflow: scroll;
+  margin: 10px 0 10px 0px;
+  width: 100%;
+}
+
+#picture-selector-pictures {
+  max-height: 400px;
+  overflow: scroll;
+
+  .picture-selector-picture {
+    cursor: pointer;
+    margin-bottom: 10px;
+
+    .thumbnail {
+      height: 200px;
+
+      .image-wrap {
+        height: 150px;
+        line-height: 150px;
+        text-align: center;
+        vertical-align: middle;
+
+        img {
+          max-height: 100%;
+          max-width: 100%;
+          margin-left: auto;
+          margin-right: auto;
+        }
+      }
+
+      .caption {
+        text-align: center;
+      }
+    }
+  }
+}
+
+@media (min-width: @screen-xs) {
+
+}
+
+@media (min-width: @screen-sm) {
+  body {
+    padding: 60px 0;
+  }
+
+  #title {
+    font-size: 24px;
+  }
+
+  label[for=redirect_to_new] {
+    font-size: 14px;
+  }
+}
+
+@media (min-width: @screen-md) {
+  #title {
+    font-size: 30px;
+  }
+}
+
+@media (min-width: @screen-lg) {
+  #title {
+    font-size: 36px;
+  }
+}

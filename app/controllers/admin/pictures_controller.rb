@@ -4,13 +4,9 @@ class Admin::PicturesController < Admin::AdminController
   authorize_resource
 
   def index
-    if params[:q].present? && params[:q][:s].present?
-      @search = Picture.unscoped.search(params[:q])
-    else
-      @search = Picture.search(params[:q])
-    end
+    @search = Picture.search(params[:q])
 
-    @pictures = @search.result.page(params[:page]).per(25).order('created_at DESC')
+    @pictures = @search.result.page(params[:page]).per(25).order('`pictures`.`created_at` DESC')
   end
 
   def show
@@ -99,7 +95,7 @@ class Admin::PicturesController < Admin::AdminController
   end
 
   def selector
-    @pictures = Picture.order('created_at DESC')
+    @pictures = Picture.order('`pictures`.`created_at` DESC')
 
     render :layout => false
   end

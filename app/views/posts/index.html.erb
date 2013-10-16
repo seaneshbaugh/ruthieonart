@@ -2,5 +2,5 @@
   <% @posts.each do |post| %>
     <%= render 'post', :post => post %>
   <% end %>
-  <%= paginate @posts %>
+  <%= paginate @posts, :route => :root_path %>
 </div>

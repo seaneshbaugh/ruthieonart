@@ -4,97 +4,129 @@
 //= require jquery-fileupload/vendor/tmpl
 //= require twitter/bootstrap
 //= require vendor_assets
+//= require ace
+//= require typeahead/typeahead
+//= require bootstrap-tokenfield/bootstrap-tokenfield
 //= require shared
 //= require_self
 
-$.fn.extend({
-    insertAtCaret: function(myValue) {
-        this.each(function(index) {
-            if (document.selection) {
-                this.focus();
-
-                var selection = document.selection.createRange();
-
-                selection.text = myValue;
-
-                this.focus();
-            } else {
-                if (this.selectionStart || this.selectionStart === "0") {
-                    var startPosition = this.selectionStart;
-                    var endPosition = this.selectionEnd;
-                    var scrollTop = this.scrollTop;
-
-                    this.value = this.value.substring(0, startPosition) + myValue + this.value.substring(endPosition, this.value.length);
-
-                    this.focus();
-
-                    this.selectionStart = startPosition + myValue.length;
-
-                    this.selectionEnd = startPosition + myValue.length;
-
-                    this.scrollTop = scrollTop;
-                } else {
-                    this.value += myValue;
-
-                    this.selectionStart = myValue.length;
-
-                    this.selectionEnd = myValue.length;
-
-                    this.focus();
-                }
-            }
-        });
-    },
-    insertImageTagAtCaret: function(url, altText, title, isLink) {
-        this.each(function(index) {
-            var imageTag = "<img src=\"" + url.substr(0, url.indexOf("?")).trim() + "\" alt=\"" + altText.trim() + "\" title=\"" + title.trim() + "\">";
-
-            if (isLink) {
-                imageTag = "<a href=\"" + url.trim() + "\">" + imageTag.trim() + "</a>";
-            }
-
-            $(this).insertAtCaret(imageTag);
-        });
-    }
-});
-
 $(function() {
-    $("[rel*=tooltip]").tooltip({placement: "top"});
-    $("[rel*=popover]").popover({trigger: "hover"});
-
-    var lastTextArea = $("textarea").first();
-
-    $("textarea").on("focus", function() {
-        lastTextArea = this;
+    $("body").tooltip({
+        placement: "top",
+        selector: "[rel*=tooltip]"
     });
 
-    $("body").on("click", ".picture-selector-button", function(event) {
+    $("body").popover({
+        selector: "[rel*=popover]",
+        trigger: "hover"
+    });
+
+    $(".ace-editor").each(function() {
+        var editorContainer, editorID, editorName, textarea, mode, theme, editor;
+
+        editorContainer = $(this);
+
+        editorID = editorContainer.attr("id");
+
+        // This expects the editor ID to be in the form of "model_name_attribute-editor"
+        editorName = "#" + editorID.split("-")[0];
+
+        textarea = $(editorName);
+
+        mode = editorContainer.data("mode").toLowerCase();
+
+        if (mode === "erb") {
+            mode = "rhtml";
+        }
+
+        if (textarea.length === 1 && ["coffee", "css", "html", "javascript", "json", "less", "rhtml", "ruby", "text"].indexOf(mode) !== -1) {
+            $(textarea).hide();
+
+            editor = ace.edit(editorID);
+
+            $("#" + editorID).data("editor", editor);
+
+            theme = editorContainer.data("theme");
+
+            if (theme) {
+                theme = theme.toLowerCase();
+            } else {
+                theme = "pastel_on_dark";
+            }
+
+            editor.setTheme("ace/theme/" + theme);
+
+            editor.getSession().setMode("ace/mode/" + mode);
+
+            editor.getSession().setValue($(textarea).val());
+
+            editor.getSession().setTabSize(2);
+
+            editor.getSession().setUseSoftTabs(true);
+
+            editor.getSession().on("change", function() {
+                $(textarea).val(editor.getSession().getValue());
+            });
+        }
+    });
+
+    $(".tokenfield").tokenfield({
+        typeahead: {
+            name: "tags",
+            remote: {
+                url: "/admin/tags.json?q[name_cont]=%QUERY",
+                cache: false
+            }
+        },
+        allowDuplicates: false,
+        createTokensOnBlur: true
+    });
+
+    $("body").on("submit", "#picture-selector-search-form", function(event) {
+        event.preventDefault();
+    });
+
+    $("body").on("keyup", "#filter-by-title", function() {
+        var filterTextBox, filterText;
+
+        filterTextBox = $(this);
+
+        filterText = filterTextBox.val();
+
+        if (filterText.length > 0) {
+            $(".picture-selector-picture").each(function() {
+                var picture;
+
+                picture = $(this);
+
+                if (picture.data("picture-title") && picture.data("picture-title").toString().toLowerCase().match(filterText.toLowerCase())) {
+                    picture.show();
+                } else {
+                    picture.hide();
+                }
+            });
+        } else {
+            $(".picture-selector-picture").show();
+        }
+    });
+
+    $("body").on("click", ".picture-selector-picture", function(event) {
+        var picture, target, img;
+
         event.preventDefault();
 
-        if ($("#picture-selector").length === 0) {
-            $.get("/admin/pictures/selector", null, function(data, textStatus, jqXHR) {
-                $("body").append('<div id="picture-selector-container" class="hidden"></div>');
+        picture = $(this);
 
-                $("#picture-selector-container").append('<a href="#picture-selector" id="picture-selector-activator" class="btn">Show Picture Selector</a>');
+        target = $(picture.closest(".modal").data("target"));
 
-                $("#picture-selector-container").append($(data));
+        if (target.length > 0 && target.data("editor")) {
+            img = "<img src=\"" + picture.data("picture-url") + "\" alt=\"" + picture.data("picture-alt-text") + "\">";
 
-                $("#picture-selector-activator").colorbox({height: "75%", inline: true, open: true, width: "75%"});
-
-            }, "html");
-        } else {
-            $("#picture-selector-activator").colorbox({height: "75%", inline: true, open: true, width: "75%"});
-        }
-    });
-
-    $("body").on("click", ".picture-selector-picture img", function() {
-        if (lastTextArea !== undefined) {
-            $(lastTextArea).insertImageTagAtCaret($(this).data("url"), $(this).attr("alt"), $(this).attr("title"), false);
+            target.data("editor").insert(img);
         }
 
-        $.colorbox.close();
+        $("#picture-selector-modal").modal("hide");
     });
-
 
     $("#pictures #new_picture").fileupload({
         dataType: "script",
@@ -106,7 +138,7 @@ $(function() {
             file = data.files[0];
 
             if (types.test(file.type) || types.test(file.name)) {
-                data.context = $(tmpl("template-upload", file));
+                data.context = $($.trim(tmpl("template-upload", file)));
 
                 $(this).append(data.context);
 
@@ -121,21 +153,21 @@ $(function() {
             if (data.context) {
                 progress = parseInt(data.loaded / data.total * 100, 10);
 
-                data.context.find(".bar").css("width", progress + "%");
+                data.context.find(".progress-bar").css("width", progress + "%").attr("aria-valuenow", progress.toString());
             }
         },
         done: function(event, data) {
             if (data.context) {
-                data.context.find(".bar").css("width", "100%");
+                data.context.find(".progress-bar").css("width", "100%").attr("aria-valuenow", "100");
 
                 setTimeout(function(){
-                    data.context.find(".progress").removeClass("progress-info active").delay(500).addClass("progress-success").parent().fadeOut(4000);
+                    data.context.find(".progress").removeClass("active").find(".progress-bar").removeClass("progress-bar-info").delay(500).addClass("progress-bar-success").closest(".upload").fadeOut(4000);
                 }, 500);
             }
         },
         fail: function(event, data) {
             if (data.context) {
-                data.context.find(".progress").removeClass("progress-info active").delay(500).addClass("progress-danger");
+                data.context.find(".progress").removeClass("active").find(".progress-bar").removeClass("progress-bar-info").delay(500).addClass("progress-bar-danger");
             }
         }
     });

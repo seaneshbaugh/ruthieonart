@@ -4,13 +4,9 @@ class Admin::PagesController < Admin::AdminController
   authorize_resource
 
   def index
-    if params[:q].present? && params[:q][:s].present?
-      @search = Page.unscoped.search(params[:q])
-    else
-      @search = Page.search(params[:q])
-    end
+    @search = Page.search(params[:q])
 
-    @pages = @search.result.page(params[:page]).per(25).order('pages.order ASC')
+    @pages = @search.result.page(params[:page]).per(25).order('`pages`.`order` ASC')
   end
 
   def show

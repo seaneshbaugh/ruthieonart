@@ -6,6 +6,7 @@ en:
       page:
         create: "Add Page"
         update: "Update Page"
+        redirect_to_new: "Create and Add Another"
     button:
       page:
   messages:

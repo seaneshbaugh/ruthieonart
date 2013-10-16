@@ -6,6 +6,7 @@ en:
       picture:
         create: "Add Picture"
         update: "Update Picture"
+        redirect_to_new: "Create and Add Another"
     button:
       picture:
   messages:
